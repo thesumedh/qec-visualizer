@@ -1,0 +1,13 @@
+services:
+  - type: web
+    name: qec-visualizer
+    env: python
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run QuantumDecoder/app.py --server.port $PORT --server.address 0.0.0.0
+    envVars:
+      - key: CLASSIQ_API_KEY
+        value: demo_placeholder
+      - key: CLASSIQ_TOKEN  
+        value: demo_placeholder
+      - key: CLASSIQ_ENDPOINT
+        value: https://platform.classiq.io/api/v1/
