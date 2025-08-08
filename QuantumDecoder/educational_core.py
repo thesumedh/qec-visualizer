@@ -7,7 +7,6 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 import time
-from reference_sites import REFERENCE_SITES, get_learning_path_resources, get_career_focused_resources
 
 class QuantumEducator:
     """Makes quantum concepts accessible to everyone"""
