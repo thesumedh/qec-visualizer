@@ -7,7 +7,6 @@ import streamlit as st
 import numpy as np
 import plotly.graph_objects as go
 import time
-from reference_sites import REFERENCE_SITES, get_learning_path_resources, get_career_focused_resources
 
 class QuantumEducator:
     """Makes quantum concepts accessible to everyone"""
@@ -348,158 +347,8 @@ class QuantumEducator:
             - Joining the ranks of quantum pioneers
             """)
     
-    def create_reference_sites_section(self):
-        """Create comprehensive reference sites for learning"""
-        
-        st.markdown("""
-        ## 📚 Essential Learning Resources
-        
-        **Your complete guide to mastering quantum error correction!**
-        """)
-        
-        # Learning level selector
-        selected_level = st.selectbox(
-            "Choose your learning level for personalized recommendations:",
-            ["beginner", "intermediate", "advanced"]
-        )
-        
-        # Get personalized resources
-        path_resources = get_learning_path_resources(selected_level)
-        
-        st.success(f"🎯 **{selected_level.title()} Path**: {path_resources['description']}")
-        st.info(f"📈 **Next Steps**: {path_resources['next_steps']}")
-        
-        # Display all resource categories
-        for category_key, category_data in REFERENCE_SITES.items():
-            with st.expander(f"{category_data['title']} ({len(category_data['sites'])} resources)"):
-                for site in category_data['sites']:
-                    col1, col2 = st.columns([3, 1])
-                    
-                    with col1:
-                        st.markdown(f"**[{site['name']}]({site['url']})**")
-                        st.write(site['description'])
-                        
-                        # Highlight key features
-                        highlights_text = " • ".join(site['highlights'])
-                        st.caption(f"✨ {highlights_text}")
-                    
-                    with col2:
-                        # Level indicator
-                        level_color = {
-                            "Beginner": "🟢",
-                            "Intermediate": "🟡", 
-                            "Advanced": "🔴",
-                            "All levels": "🔵",
-                            "Professional": "🟣"
-                        }
-                        
-                        level_key = site['level']
-                        for key in level_color.keys():
-                            if key in level_key:
-                                st.markdown(f"{level_color[key]} {level_key}")
-                                break
-                    
-                    st.markdown("---")
-        
-        # Career-focused resources
-        st.markdown("## 💼 Career Development Resources")
-        
-        career_path = st.selectbox(
-            "Choose your career focus:",
-            ["academic_path", "industry_path", "startup_path"]
-        )
-        
-        career_resources = get_career_focused_resources()[career_path]
-        
-        st.info(f"🎯 **{career_path.replace('_', ' ').title()}**: {career_resources['description']}")
-        
-        col1, col2 = st.columns(2)
-        
-        with col1:
-            st.markdown("**📚 Recommended Resources:**")
-            for resource in career_resources['resources']:
-                st.write(f"• {resource}")
-        
-        with col2:
-            st.markdown("**🛠️ Key Skills to Develop:**")
-            for skill in career_resources['skills']:
-                st.write(f"• {skill}")
-        
-        # Quick access links
-        st.markdown("## ⚡ Quick Access Links")
-        
-        quick_col1, quick_col2, quick_col3 = st.columns(3)
-        
-        with quick_col1:
-            st.markdown("""
-            **🚀 Start Coding Now:**
-            - [IBM Qiskit](https://qiskit.org/)
-            - [Google Cirq](https://quantumai.google/cirq)
-            - [Classiq Platform](https://www.classiq.io/)
-            """)
-        
-        with quick_col2:
-            st.markdown("""
-            **📖 Learn Theory:**
-            - [Qiskit Textbook](https://qiskit.org/textbook/)
-            - [Microsoft Quantum Katas](https://github.com/Microsoft/QuantumKatas)
-            - [Quantum Computing Stack Exchange](https://quantumcomputing.stackexchange.com/)
-            """)
-        
-        with quick_col3:
-            st.markdown("""
-            **💼 Find Jobs:**
-            - [Quantum Jobs](https://quantumjobs.net/)
-            - [IBM Quantum Network](https://quantum-network.org/)
-            - [IEEE Quantum](https://quantum.ieee.org/)
-            """)
-        
-        # Study plan generator
-        st.markdown("## 📅 Personalized Study Plan")
-        
-        study_duration = st.selectbox(
-            "How much time can you dedicate per week?",
-            ["2-3 hours (casual)", "5-7 hours (focused)", "10+ hours (intensive)"]
-        )
-        
-        study_goal = st.selectbox(
-            "What's your main goal?",
-            ["Understand the basics", "Get a quantum job", "Contribute to research", "Start a quantum company"]
-        )
-        
-        if st.button("🎯 Generate My Study Plan"):
-            st.success("📋 **Your Personalized Quantum Error Correction Study Plan:**")
-            
-            if "casual" in study_duration:
-                st.markdown("""
-                **Week 1-2**: Start with IBM Qiskit Textbook basics
-                **Week 3-4**: Try Microsoft Quantum Katas exercises  
-                **Week 5-6**: Experiment with this QEC Visualizer
-                **Week 7-8**: Join Quantum Computing Stack Exchange community
-                """)
-            elif "focused" in study_duration:
-                st.markdown("""
-                **Week 1**: Master quantum basics with Qiskit Textbook
-                **Week 2**: Complete Quantum Katas error correction module
-                **Week 3**: Deep dive into Surface Code paper
-                **Week 4**: Implement QEC codes in Qiskit
-                **Week 5**: Explore ML decoders and neural networks
-                **Week 6**: Build your own QEC project
-                """)
-            else:  # intensive
-                st.markdown("""
-                **Week 1**: Complete quantum fundamentals
-                **Week 2**: Master stabilizer formalism
-                **Week 3**: Implement multiple QEC codes
-                **Week 4**: Study advanced papers and ML techniques
-                **Week 5**: Contribute to open-source quantum projects
-                **Week 6**: Start networking with quantum professionals
-                """)
-            
-            st.balloons()
-
     def create_personalized_study_plan(self):
-        """Create personalized study plan with PDF download"""
+        """Create personalized study plan with download"""
         
         st.markdown("""
         ## 📅 Get Your Personalized Study Plan
@@ -538,136 +387,33 @@ class QuantumEducator:
         )
         
         if st.button("📅 **Generate My Study Plan**", type="primary"):
-            # Generate study plan based on inputs
-            plan_data = self._generate_study_plan(experience_level, time_commitment, goal)
-            
             st.success("🎉 **Your Personalized Quantum Error Correction Study Plan:**")
             
-            # Display the plan
-            for week, activities in plan_data['weekly_plan'].items():
-                with st.expander(f"📅 {week}"):
-                    for activity in activities:
-                        st.write(f"• {activity}")
+            # Simple study plan based on level
+            if "beginner" in experience_level.lower():
+                st.markdown("""
+                **Week 1**: Watch quantum basics videos, try this QEC tool
+                **Week 2**: IBM Qiskit Textbook chapters 1-2
+                **Week 3**: Learn about quantum errors, try Surface Code
+                **Week 4**: Join quantum community, practice daily
+                """)
+            else:
+                st.markdown("""
+                **Week 1**: Master this QEC tool, read Nielsen & Chuang
+                **Week 2**: Implement QEC codes in Qiskit
+                **Week 3**: Study ML decoders, try advanced features
+                **Week 4**: Build your own QEC project
+                """)
             
-            # Key resources
-            st.markdown("### 🔗 Essential Links for Your Level:")
-            for resource in plan_data['key_resources']:
-                st.markdown(f"- **[{resource['name']}]({resource['url']})** - {resource['description']}")
-            
-            # Generate TXT content
-            txt_content = self._create_txt_content(plan_data, experience_level, time_commitment, goal)
-            
-            # Download button
-            st.download_button(
-                label="📥 **Download Study Plan**",
-                data=txt_content,
-                file_name=f"quantum_study_plan_{experience_level.split()[0].lower()}.txt",
-                mime="text/plain",
-                type="primary"
-            )
+            # Essential resources
+            st.markdown("""
+            ### 🔗 Essential Resources:
+            - **[IBM Qiskit](https://qiskit.org/)** - Start coding quantum
+            - **[This QEC Visualizer](#)** - Interactive learning
+            - **[Quantum Jobs](https://quantumjobs.net/)** - Find opportunities
+            """)
             
             st.balloons()
-    
-    def _generate_study_plan(self, level, time, goal):
-        """Generate study plan based on user inputs"""
-        
-        if "beginner" in level.lower():
-            return {
-                'weekly_plan': {
-                    'Week 1': ['Watch "Quantum Computing Explained" videos', 'Try this QEC Visualizer with 3-qubit code', 'Read: What is a qubit?'],
-                    'Week 2': ['IBM Qiskit Textbook - Chapters 1-2', 'Practice with quantum gates', 'Join r/QuantumComputing'],
-                    'Week 3': ['Learn about quantum errors', 'Try Surface Code in this tool', 'Read about Google\'s quantum computer'],
-                    'Week 4': ['Microsoft Quantum Katas - basics', 'Export QASM from this tool', 'Connect with quantum community']
-                },
-                'key_resources': [
-                    {'name': 'IBM Qiskit Textbook', 'url': 'https://qiskit.org/textbook/', 'description': 'Free interactive quantum textbook'},
-                    {'name': 'This QEC Visualizer', 'url': '#', 'description': 'Start with 3-qubit code, then try Surface Code'},
-                    {'name': 'Quantum Computing Subreddit', 'url': 'https://reddit.com/r/QuantumComputing', 'description': 'Beginner-friendly community'}
-                ]
-            }
-        elif "student" in level.lower():
-            return {
-                'weekly_plan': {
-                    'Week 1': ['Review linear algebra basics', 'Master this QEC tool completely', 'Read Nielsen & Chuang Ch 10'],
-                    'Week 2': ['Implement 3-qubit code in Qiskit', 'Study stabilizer formalism', 'Try ML decoder in this tool'],
-                    'Week 3': ['Surface code deep dive', 'Read Google\'s quantum supremacy paper', 'Practice QASM programming'],
-                    'Week 4': ['Build your own QEC project', 'Join IBM Quantum Network', 'Start following quantum researchers']
-                },
-                'key_resources': [
-                    {'name': 'Nielsen & Chuang Textbook', 'url': 'https://www.cambridge.org/core/books/quantum-computation-and-quantum-information/01E10196D0A682A6AEFFEA52D53BE9AE', 'description': 'The quantum computing bible'},
-                    {'name': 'IBM Quantum Network', 'url': 'https://quantum-network.org/', 'description': 'Access real quantum computers'},
-                    {'name': 'arXiv Quantum Physics', 'url': 'https://arxiv.org/list/quant-ph/recent', 'description': 'Latest research papers'}
-                ]
-            }
-        else:  # Advanced
-            return {
-                'weekly_plan': {
-                    'Week 1': ['Implement MWPM decoder', 'Study this tool\'s ML implementation', 'Read latest QEC papers'],
-                    'Week 2': ['Contribute to open source quantum projects', 'Network with quantum professionals', 'Apply to quantum companies'],
-                    'Week 3': ['Start your own quantum research', 'Publish on quantum topics', 'Mentor others in quantum'],
-                    'Week 4': ['Advanced: Topological codes', 'Quantum LDPC codes', 'Industry collaboration']
-                },
-                'key_resources': [
-                    {'name': 'Quantum Jobs', 'url': 'https://quantumjobs.net/', 'description': 'Find quantum computing positions'},
-                    {'name': 'PennyLane', 'url': 'https://pennylane.ai/', 'description': 'Quantum machine learning'},
-                    {'name': 'Classiq Platform', 'url': 'https://www.classiq.io/', 'description': 'Professional quantum development'}
-                ]
-            }
-    
-    def _create_txt_content(self, plan_data, level, time, goal):
-        """Create TXT content for study plan"""
-        
-        import datetime
-        txt_lines = [
-            "=" * 60,
-            "YOUR PERSONALIZED QUANTUM ERROR CORRECTION STUDY PLAN",
-            "=" * 60,
-            "",
-            f"Experience Level: {level}",
-            f"Time Commitment: {time} per week", 
-            f"Goal: {goal}",
-            f"Generated: {datetime.datetime.now().strftime('%Y-%m-%d')}",
-            "",
-            "YOUR LEARNING PATH:",
-            "-" * 30
-        ]
-        
-        for week, activities in plan_data['weekly_plan'].items():
-            txt_lines.append(f"\n{week}:")
-            for activity in activities:
-                txt_lines.append(f"  - {activity}")
-        
-        txt_lines.extend([
-            "",
-            "ESSENTIAL RESOURCES:",
-            "-" * 30
-        ])
-        
-        for resource in plan_data['key_resources']:
-            txt_lines.append(f"- {resource['name']}: {resource['description']}")
-            txt_lines.append(f"  Link: {resource['url']}")
-            txt_lines.append("")
-        
-        txt_lines.extend([
-            "QUICK START CHECKLIST:",
-            "-" * 30,
-            "[ ] Bookmark this QEC Visualizer tool",
-            "[ ] Join quantum computing community", 
-            "[ ] Set up development environment",
-            "[ ] Follow quantum researchers",
-            "[ ] Practice daily with quantum concepts",
-            "",
-            "SUCCESS TIPS:",
-            "- Start small, build momentum",
-            "- Join communities for support", 
-            "- Practice with real tools",
-            "- Don't get overwhelmed",
-            "- Celebrate small wins",
-            "",
-            "Generated by QEC Visualizer - Your Quantum Learning Companion"
-        ])
-        
-        return "\n".join(txt_lines)
 
 # Global educator instance
 quantum_educator = QuantumEducator()
