@@ -670,7 +670,7 @@ def main():
                         highlight_errors=error_qubits,
                         step_info=surface_step_info
                     )
-                    st.plotly_chart(lattice_fig, use_container_width=True)
+                    st.plotly_chart(lattice_fig, use_container_width=True, key="surface_code_lattice")
                 else:
                     st.subheader("Current Quantum State")
                     visualizer = QuantumStateVisualizer(qec_code)
@@ -691,7 +691,7 @@ def main():
                     ))**2 if st.session_state.original_state else 1.0
                 }
                 bloch_fig = enhanced_viz.create_bloch_sphere_3d(st.session_state.quantum_state, step_info)
-                st.plotly_chart(bloch_fig, use_container_width=True)
+                st.plotly_chart(bloch_fig, use_container_width=True, key="bloch_sphere_3d")
             
             # Error propagation animation
             if st.session_state.error_history:
@@ -699,7 +699,7 @@ def main():
                 if st.button("▶️ Play Animation", key="play_animation_control"):
                     error_info = st.session_state.error_history[-1]
                     animation_fig = enhanced_viz.create_error_propagation_animation(qec_code, error_info['qubit'], error_info['type'])
-                    st.plotly_chart(animation_fig, use_container_width=True)
+                    st.plotly_chart(animation_fig, use_container_width=True, key="control_error_anim")
             
             # Show dominant state info
             probs = np.abs(st.session_state.quantum_state.state_vector)**2
@@ -767,7 +767,7 @@ def main():
                     marker_color='lightgreen'
                 ))
                 perfect_fig.update_layout(title="Encoded Information", height=250)
-                st.plotly_chart(perfect_fig, use_container_width=True)
+                st.plotly_chart(perfect_fig, use_container_width=True, key="control_perfect_state")
                 st.caption("✅ Perfect quantum state → Ready for protection!")
             
             with example_col2:
@@ -778,7 +778,7 @@ def main():
                     marker_color='lightcoral'
                 ))
                 error_fig.update_layout(title="Information Corrupted", height=250)
-                st.plotly_chart(error_fig, use_container_width=True)
+                st.plotly_chart(error_fig, use_container_width=True, key="control_error_state")
                 st.caption("⚡ Oh no! Error detected → But we can fix it!")
             
             with example_col3:
@@ -789,7 +789,7 @@ def main():
                     marker_color='lightblue'
                 ))
                 fixed_fig.update_layout(title="Information Restored", height=250)
-                st.plotly_chart(fixed_fig, use_container_width=True)
+                st.plotly_chart(fixed_fig, use_container_width=True, key="control_fixed_state")
                 st.caption("✨ Information restored! → Try this yourself!")
             
             st.success("🎆 **That's the magic of quantum error correction!** Try it yourself using the sidebar controls.")
@@ -1023,7 +1023,7 @@ qasm_result = circuit.get_qasm()
                     animation_fig = enhanced_viz.create_error_propagation_animation(
                         qec_code, error_info['qubit'], error_info['type']
                     )
-                    st.plotly_chart(animation_fig, use_container_width=True)
+                    st.plotly_chart(animation_fig, use_container_width=True, key="export_error_anim")
                 
                 # Show current step status
                 st.subheader("🔄 Correction Flow & Status")
@@ -1119,7 +1119,7 @@ qasm_result = circuit.get_qasm()
                 prob_df = pd.DataFrame(prob_data)
                 fig = px.bar(prob_df, x="Error Location", y="Probability", 
                            title="ML Model Output Probabilities")
-                st.plotly_chart(fig, use_container_width=True)
+                st.plotly_chart(fig, use_container_width=True, key="ml_probabilities")
             
             with explain_col2:
                 st.markdown("**🥇 Alternative Predictions**")
@@ -1162,7 +1162,7 @@ Neural Network Details:
                 ))
                 acc_fig.update_layout(title="Model Accuracy Over Training", 
                                     xaxis_title="Epochs", yaxis_title="Accuracy")
-                st.plotly_chart(acc_fig, use_container_width=True)
+                st.plotly_chart(acc_fig, use_container_width=True, key="training_accuracy")
             
             with train_col2:
                 # Loss plot
@@ -1181,7 +1181,7 @@ Neural Network Details:
                 ))
                 loss_fig.update_layout(title="Model Loss Over Training", 
                                      xaxis_title="Epochs", yaxis_title="Loss")
-                st.plotly_chart(loss_fig, use_container_width=True)
+                st.plotly_chart(loss_fig, use_container_width=True, key="training_loss")
             
             # Final Training Metrics
             st.subheader("🎯 Final Model Performance")
@@ -1330,7 +1330,7 @@ Neural Network Details:
                 st.subheader("🌍 3D Fidelity Landscape (PanQEC Style)")
                 landscape_fig = enhanced_viz.create_fidelity_landscape_3d(st.session_state.trial_data)
                 if landscape_fig:
-                    st.plotly_chart(landscape_fig, use_container_width=True)
+                    st.plotly_chart(landscape_fig, use_container_width=True, key="fidelity_landscape_3d")
                 else:
                     st.info("Need more trial data for 3D landscape visualization")
             
@@ -1350,7 +1350,7 @@ Neural Network Details:
                 fidelity_fig = px.line(df, x='trial', y='fidelity', 
                                      title='Recovery Fidelity vs Trial Number',
                                      markers=True)
-                st.plotly_chart(fidelity_fig, use_container_width=True)
+                st.plotly_chart(fidelity_fig, use_container_width=True, key="fidelity_trends")
             
             # Performance Summary
             st.subheader("⚡ Performance Summary")
@@ -1490,7 +1490,7 @@ Neural Network Details:
                     marker_color='lightgreen'
                 ))
                 perfect_fig.update_layout(title="Encoded Information", height=250)
-                st.plotly_chart(perfect_fig, use_container_width=True)
+                st.plotly_chart(perfect_fig, use_container_width=True, key="tutorial_perfect_state")
                 st.caption("✅ Quantum information safely encoded")
             
             with demo_col2:
@@ -1501,7 +1501,7 @@ Neural Network Details:
                     marker_color='lightcoral'
                 ))
                 error_fig.update_layout(title="Information Corrupted", height=250)
-                st.plotly_chart(error_fig, use_container_width=True)
+                st.plotly_chart(error_fig, use_container_width=True, key="tutorial_error_state")
                 st.caption("⚡ Oh no! Error detected")
             
             with demo_col3:
@@ -1512,7 +1512,7 @@ Neural Network Details:
                     marker_color='lightblue'
                 ))
                 fixed_fig.update_layout(title="Information Restored", height=250)
-                st.plotly_chart(fixed_fig, use_container_width=True)
+                st.plotly_chart(fixed_fig, use_container_width=True, key="tutorial_fixed_state")
                 st.caption("✨ Magic! Information recovered")
             
             st.success("🎆 **You're ready!** Head to the Control tab and start your quantum journey!")
